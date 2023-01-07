@@ -1,20 +1,25 @@
-//290. Word Pattern
-//Given a pattern and a string s, find if s follows the same pattern.
-//Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s.
+//520. Detect Capital
+//We define the usage of capitals in a word to be right when one of the following cases holds:
+
+//All letters in this word are capitals, like "USA".
+//All letters in this word are not capitals, like "leetcode".
+//Only the first letter in this word is capital, like "Google".
+//Given a string word, return true if the usage of capitals in it is right.
 
 class Solution {
 public:
-    bool wordPattern(string pattern, string s) {
-        map<char, int> p;
-        map<string, int> w;
-        istringstream in(s);
-        
-        int i = 0, n = pattern.size();
-        for (string word; in >> word; ++i) {
-            if (i == n || p[pattern[i]] != w[word])
-                return false;
-            p[pattern[i]] = w[word] = i + 1;
-        }
-        return i == n;
+    bool detectCapitalUse(string word) {
+        int count=0;
+        if(word.size()==1)
+            return true;        
+        for(int i=0; i<word.size(); i++)
+            if(isupper(word[i]))
+                count++;        
+        if(count==1 && isupper(word[0]))
+            return true;
+        if(count==0 || count==word.size())
+            return true;
+        else
+            return false;
     }
 };
