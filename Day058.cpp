@@ -18,4 +18,31 @@
 // n == grid.length == grid[i].length
 // n == 2x where 0 <= x <= 6
 
+class Solution {
+public:
+   Node* solve(int l,int r,int t,int b, vector<vector<int>>& grid){
+        if(l==r || t==b ){
+            return new Node(grid[t][l],true);
+        }
+        Node* root= new Node(1,false);
 
+        root->topLeft=solve(l,(r+l)/2,t,(b+t)/2,grid);
+        root->topRight=solve(((r+l)/2)+1,r,t,(b+t)/2,grid);
+        root->bottomLeft=solve(l,(r+l)/2,((b+t)/2)+1,b,grid);
+        root->bottomRight=solve(((r+l)/2)+1,r,(b+t)/2+1,b,grid);
+
+        if(root->topLeft->val == root->topRight->val && 
+           root->topLeft->val == root->bottomLeft->val &&
+           root->topLeft->val == root->bottomRight->val &&
+           root->topLeft->isLeaf && root->topRight->isLeaf &&
+           root->bottomLeft->isLeaf && root->bottomRight->isLeaf)
+               return new Node(root->topLeft->val,true);
+
+        return root;
+    }
+
+    Node* construct(vector<vector<int>>& grid) {
+        int n=grid.size();
+        return solve(0,n-1,0,n-1,grid);
+    }
+};
